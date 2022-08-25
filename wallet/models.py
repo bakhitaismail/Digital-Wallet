@@ -3,6 +3,7 @@ from json.encoder import INFINITY
 from locale import currency
 from inspect import stack
 from operator import countOf
+from re import T
 # from operator import mod
 # from pyexpat import model
 from xmlrpc.client import Boolean
@@ -15,17 +16,21 @@ from django.utils import timezone
 class Customer(models.Model):
     first_name= models.CharField(max_length=15)
     last_name=models.CharField(max_length=15)
-    gender=models.CharField(max_length=1)
+    GENDER_CHOICE=(("M", "Male"), ("F", "Female"))
+    gender=models.CharField(max_length=1, choices=GENDER_CHOICE, null=True)
     address=models.TextField(max_length=50)
     age=models.PositiveSmallIntegerField()
-    nationality=models.CharField(max_length=20)
-    ID_number=models.CharField(max_length=10)
+    # NATIONALITY_CHOICE=(("Kenya"), ("Tanzania"), ("Sudan"), ("Uganda"), ("Rwanda"), ("Canada"))
+    nationality=models.CharField(max_length=20, null=True)
+    id_number=models.CharField(max_length=10)
     phone_number=models.CharField(max_length=15)
     email=models.EmailField(max_length=35)
     country=models.CharField(max_length=30)
     signature=models.TextField()
-    employment_status=models.BooleanField
-    marital_status=models.CharField(max_length=10)
+    # EMPLOYMENT_CHOICE=(("Engineer"), ("Doctor"), ("Farmer"), ("Teacher"))
+    employment_status=models.CharField(max_length=15, null=True)
+    # marital_choice=(("Married"), ("Single"), ("Divorced"), ("Widow"), ("Widower"))
+    marital_status=models.CharField(max_length=15, null=True)
 
 class Wallet(models.Model):
     customer=models.ForeignKey("Customer", on_delete=models.CASCADE,related_name="Wallet_customer")
@@ -48,11 +53,12 @@ class Transaction(models.Model):
     amount=models.PositiveIntegerField()
     transaction_type=models.CharField(max_length=10)
     customer=models.ForeignKey("Customer", on_delete=models.CASCADE,related_name="Transaction_customer")
-    thirdparty=models.ForeignKey("Thirdparty", on_delete=models.CASCADE,related_name="Transaction_thirdparty")
     transaction_code=models.CharField(max_length=4)
     charge=models.IntegerField()
     status=models.CharField(max_length=10)
     destination=models.ForeignKey("Account", on_delete=models.CASCADE,related_name="Transaction_destination")
+    origin_account=models.CharField(max_length=140, default='STRING')
+    
     
 class Card(models.Model):
     card_number=models.CharField(max_length=16)
@@ -62,6 +68,7 @@ class Card(models.Model):
     serial_code=models.PositiveSmallIntegerField()
     expiry_date=models.DateTimeField()
     card_status=models.CharField(max_length=10)
+    
     
 class Thirdparty(models.Model):
     fullname=models.CharField(max_length=20)   
@@ -106,8 +113,8 @@ class Reward(models.Model):
     transaction=models.ForeignKey("Transaction", on_delete=models.CASCADE,related_name="Reward_transaction")
     Wallet=models.ForeignKey("Wallet", on_delete=models.CASCADE,related_name="Reward_wallet")
     
+    
 class Currency(models.Model):
     name=models.CharField(max_length=20)
     country=models.CharField(max_length=40)
     symbol=models.CharField(max_length=15)    
-    
