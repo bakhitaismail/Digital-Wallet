@@ -25,11 +25,12 @@ class Customer(models.Model):
     id_number=models.CharField(max_length=10)
     phone_number=models.CharField(max_length=15)
     email=models.EmailField(max_length=35)
+    profile_pic=models.ImageField
     country=models.CharField(max_length=30)
     signature=models.TextField()
-    # EMPLOYMENT_CHOICE=(("Engineer"), ("Doctor"), ("Farmer"), ("Teacher"))
+    EMPLOYMENT_CHOICE=(("Engineer"), ("Doctor"), ("Farmer"), ("Teacher"))
     employment_status=models.CharField(max_length=15, null=True)
-    # marital_choice=(("Married"), ("Single"), ("Divorced"), ("Widow"), ("Widower"))
+    marital_choice=(("Married"), ("Single"), ("Divorced"), ("Widow"), ("Widower"))
     marital_status=models.CharField(max_length=15, null=True)
 
 class Wallet(models.Model):

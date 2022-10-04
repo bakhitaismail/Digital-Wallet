@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register_account, register_customer, register_transaction, register_wallet, register_card, register_thirdparty, register_notification, register_receipt, register_loan, register_reward, register_currency
+from .views import customer_profile, edit_customer, list_customers, register_account, register_customer, register_transaction, register_wallet, register_card, register_thirdparty, register_notification, register_receipt, register_loan, register_reward, register_currency
 
 urlpatterns =[
     path("register/", register_customer, name="register"),
@@ -13,4 +13,7 @@ urlpatterns =[
     path("loanregister/", register_loan, name="loan"),
     path("rewardregister/", register_reward, name="reward"),
     path("currencyregister/", register_currency, name="currency"),
+    path("list/", list_customers, name="list_customers"),
+    path("customer/<int:id>/", customer_profile, name="customer_profile"),
+    path("customer/edit/<int:id/", edit_customer, name="edit_customer")
 ]
